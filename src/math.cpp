@@ -38,13 +38,42 @@ Math::Math(int p_w, int p_h) :WINDOW_WIDTH(p_w), WINDOW_HEIGHT(p_h) {
 }
 
 void Math::render(SDL_Renderer * renderer) {
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    std::vector<Vector3> pnts;
+
+    Matrix fin = viewport * projection_matrix;
+    
+    for (Object& object : objects)
+        for (auto &point : object.Points) {
+            point = rotate * (point + camera); 
+            pnts.emplace_back(fin * point); 
+        } 
+    
+    for (Object& object : objects) {
+        for (auto edge : object.Edges) {
+            auto p1 = pnts[edge.first], p2 = pnts[edge.second];
+            if (std::min({p1.x, p1.y, p2.x, p2.y}) >= 0 && std::max({p1.z, p2.z}) < 1)
+                SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);
+        }
+    }
 }
 
 void Math::moveCamera(Vector3 dl) {
+    camera = dl;
 }
 
 
+void Math::addObject(Object& object) {
+    objects.emplace_back(object);
+}
 
 void Math::rotCamera(float thetaX, float thetaY, float thetaZ) {
+    tx = thetaX, ty = thetaY, tz = thetaZ;
+    x += tx, y += ty, z += tz;
+    float a = cos(tx), b = sin(tx),
+        c = cos(ty), d = sin(ty);
+    
+    (*rotate[0])[0] = c, (*rotate[0])[2] = d;
+    (*rotate[1])[0] = b * d, (*rotate[1])[1] = a, (*rotate[1])[2] = -b * c;
+    (*rotate[2])[0] = - a * d, (*rotate[2])[1] = b, (*rotate[2])[2] = a * c;
 }
-

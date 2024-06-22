@@ -1,7 +1,7 @@
 #pragma once
 #include "Vector3.hpp"
 #include "Matrix.hpp"
-#include "SDL2/SDL.h"
+#include "Object.hpp"
 
 class Math {
     private:
@@ -10,6 +10,7 @@ class Math {
            viewport,
            translation;
     Vector3 camera;
+    std::vector<Object> objects;
     float tx, ty, tz;
     float x, y, z;
 
@@ -20,5 +21,6 @@ class Math {
     void render(SDL_Renderer * renderer);
     void moveCamera(Vector3 dl);
     void rotCamera(float thetaX, float thetaY, float thetaZ);
+    void addObject(Object& object);
 };
 

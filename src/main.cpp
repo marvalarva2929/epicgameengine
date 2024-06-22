@@ -7,6 +7,8 @@
 #include <iostream>
 #define nl '\n'
 
+#include "RenderWindow.hpp"
+
 int main(int argc, char* args[]) {
 
     if (SDL_Init(SDL_INIT_VIDEO)) 
@@ -19,8 +21,9 @@ int main(int argc, char* args[]) {
     SDL_Window* window;
     int WINDOW_HEIGHT = 720, WINDOW_WIDTH = 1280;
     SDL_CreateWindowAndRenderer(WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN, &window, &renderer);
+    RenderWindow canvas("tester", 1280, 720, renderer, window);    
     
-    bool isRunning = true;
+	bool isRunning = true;
     SDL_Event e;
     
     float lastRenderTime = SDL_GetTicks();
@@ -39,6 +42,10 @@ int main(int argc, char* args[]) {
             SDL_Delay(delayTime);
 
         lastRenderTime = curTime; 
-    }
+    
+        canvas.display(); 
+        canvas.clear();
+ 
+	}
 }
 

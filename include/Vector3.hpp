@@ -1,5 +1,6 @@
 #pragma once
 #include <assert.h>
+#include <iostream>
 
 class Vector3 {
     public:
@@ -56,5 +57,9 @@ class Vector3 {
     float x;
     float y;
     float z;
+
+	void print() {
+		std::cout << x << ", " << y << ", " << z << std::endl;
+	}
 };
 

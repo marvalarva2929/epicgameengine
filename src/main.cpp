@@ -8,6 +8,8 @@
 #define nl '\n'
 
 #include "RenderWindow.hpp"
+#include "Vector3.hpp"
+#include "math.hpp"
 
 int main(int argc, char* args[]) {
 
@@ -21,31 +23,66 @@ int main(int argc, char* args[]) {
     SDL_Window* window;
     int WINDOW_HEIGHT = 720, WINDOW_WIDTH = 1280;
     SDL_CreateWindowAndRenderer(WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN, &window, &renderer);
-    RenderWindow canvas("tester", 1280, 720, renderer, window);    
     
-	bool isRunning = true;
+    RenderWindow canvas("tester", 1280, 720, renderer, window);    
+    Math inject(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    bool isRunning = true;
     SDL_Event e;
     
     float lastRenderTime = SDL_GetTicks();
     
+    Object test("vase.obj");
+    inject.addObject(test);
+    
     while (isRunning) {
-		while (SDL_PollEvent(&e))
+        const Uint8* keyboardStates = SDL_GetKeyboardState(NULL);  
+        
+        Vector3 dl(0, 0, 0); 
+        float tx = 0, ty = 0, tz = 0;
+        if (keyboardStates[SDL_SCANCODE_LSHIFT])
+            dl.y -= 0.05;
+        if (keyboardStates[SDL_SCANCODE_S])
+            dl.z -= 0.05;
+        if (keyboardStates[SDL_SCANCODE_W])
+            dl.z -= -0.05;
+        if (keyboardStates[SDL_SCANCODE_A]) 
+            dl.x -= -0.05;
+        if (keyboardStates[SDL_SCANCODE_D]) 
+            dl.x -= 0.05;
+        if (keyboardStates[SDL_SCANCODE_SPACE]) 
+            dl.y -= -0.05;
+        if (keyboardStates[SDL_SCANCODE_I])
+            tx += 0.015;
+        if (keyboardStates[SDL_SCANCODE_K])
+            tx -= 0.015;
+        if (keyboardStates[SDL_SCANCODE_J])
+            ty -= 0.015;
+        if (keyboardStates[SDL_SCANCODE_L])
+            ty += 0.015;
+        if (keyboardStates[SDL_SCANCODE_U])
+            tz += 0.015;
+        inject.moveCamera(dl);
+        inject.rotCamera(tx, ty, tz);
+
+        while (SDL_PollEvent(&e))
             switch(e.type) {
                 case SDL_QUIT:
                       isRunning = false;
                       break;
             }
         
+        inject.render(renderer);
+
         float curTime = SDL_GetTicks();
         float delayTime = std::max((float)0.0f, (float((1000.0f*(1.0f/60.0)) - (curTime - lastRenderTime)))); 
         if (delayTime)
             SDL_Delay(delayTime);
 
         lastRenderTime = curTime; 
-    
+        
         canvas.display(); 
         canvas.clear();
- 
-	}
+    }
 }
 

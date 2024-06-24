@@ -40,18 +40,20 @@ Math::Math(int p_w, int p_h) :WINDOW_WIDTH(p_w), WINDOW_HEIGHT(p_h) {
 void Math::render(SDL_Renderer * renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     std::vector<Vector3> pnts;
-
     Matrix fin = viewport * projection_matrix;
     
     for (Object& object : objects)
         for (auto &point : object.Points) {
             point = rotate * (point + camera); 
             pnts.emplace_back(fin * point); 
-        } 
-    
-    for (Object& object : objects) {
+		} 
+   	
+	bool first = 1;
+	for (Object& object : objects) {
         for (auto edge : object.Edges) {
             auto p1 = pnts[edge.first], p2 = pnts[edge.second];
+			if (first) p1.print(), p2.print(), std::cout << std::endl;
+			first = 0;
             if (std::min({p1.x, p1.y, p2.x, p2.y}) >= 0 && std::max({p1.z, p2.z}) < 1)
                 SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);
         }

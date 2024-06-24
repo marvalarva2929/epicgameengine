@@ -1,10 +1,11 @@
 #include "math.hpp"
+#include "SDL2/SDL2_gfxPrimitives.h"
 #include <algorithm>
 #include <iostream>
 #include <SDL2/SDL.h>
-#include <SDL2_gfx-1.0.4/SDL2_gfxPrimitives.h>
 
 Math::Math(int p_w, int p_h) :WINDOW_WIDTH(p_w), WINDOW_HEIGHT(p_h) {
+
     
     float fovy = 3.14159/4, // 45 degrees
         aspect = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT,
@@ -53,11 +54,14 @@ void Math::render(SDL_Renderer * renderer) {
 	for (Object& object : objects) {
         for (auto face : object.Faces) {
 			Sint16 n = face.size();
-			Sint16 vx[n], vy[n];
+		 	Sint16 * vx = new Sint16[n];
+			Sint16 * vy = new Sint16[n];
 			for (int i = 0; i < n; i++)
-				vx[i] = face[i].x,
-				vy[i] = face[i].y;
-			filledPolygonColor(renderer, &vx, &vy, n, (Uint32)0xFFFFFF);	
+				vx[i] = pnts[face[i]].x,
+				vy[i] = pnts[face[i]].y;
+			Uint8 r = 255, g = 255, b = 255, a = 1;
+			
+			filledPolygonRGBA(renderer, vx, vy, n, r, g, b, a);		
 		}
     }
 }

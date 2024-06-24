@@ -21,14 +21,14 @@ Object::Object(std::string filename) {
             std::string face = c.substr(1);
 			//std::cout << face << std::endl;
 			std::stringstream ss; ss << face;
-			std::vector<Vector3> shape; 
+			std::vector<int> shape; 
 			while (!ss.eof()) {
 				std::string womp;
 				std::stringstream ind; ss >> womp; ind << womp;
                	int id; ind >> id;
-				shape.emplace_back(id);	
+				shape.push_back(id);	
 			}
-       		Faces.emplace_back(shape);	 
+       		Faces.push_back(shape);	 
 		}
     }
     //std::string next = " ";

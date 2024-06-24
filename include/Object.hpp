@@ -11,7 +11,7 @@ class Object {
         Object(std::string filename);
         
         std::vector<Vector3> Points;
-        std::vector<std::vector<Vector3>> Faces;
+        std::vector<std::vector<int>> Faces;
         int getX();
         int getY();
         void addX(int toAdd);

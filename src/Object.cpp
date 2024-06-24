@@ -6,7 +6,7 @@
 Object::Object(std::string filename) {
     std::ifstream file; 
     file.open(filename);
-	float scale = 0.002f;
+	float scale = 2.0f;
     //std::cout << file.fail() << " " << filename << std::endl; 
     while (!file.eof()) {
         std::string c;
@@ -15,23 +15,21 @@ Object::Object(std::string filename) {
             std::string vert = c.substr(1);
             std::stringstream ss; ss << vert;  
             float one, two, three;
-            //ss >> one >> two >> three;
+            ss >> one >> two >> three;
             Points.emplace_back(one * scale, two * scale, three * scale); 
         } else if (c[0] == 'f') {
             std::string face = c.substr(1);
 			//std::cout << face << std::endl;
 			std::stringstream ss; ss << face;
-            int last = -1; 
-            while (!ss.eof()) {
+			std::vector<Vector3> shape; 
+			while (!ss.eof()) {
 				std::string womp;
 				std::stringstream ind; ss >> womp; ind << womp;
                	int id; ind >> id;
-				if (last != -1)
-                  Edges.emplace_back(last, id);
-                last = id;
-            }
-			//break;
-        }
+				shape.emplace_back(id);	
+			}
+       		Faces.emplace_back(shape);	 
+		}
     }
     //std::string next = " ";
     //while (true) {

@@ -1,6 +1,8 @@
 #include "math.hpp"
 #include <algorithm>
 #include <iostream>
+#include <SDL2/SDL.h>
+#include <SDL2_gfx-1.0.4/SDL2_gfxPrimitives.h>
 
 Math::Math(int p_w, int p_h) :WINDOW_WIDTH(p_w), WINDOW_HEIGHT(p_h) {
     
@@ -48,15 +50,15 @@ void Math::render(SDL_Renderer * renderer) {
             pnts.emplace_back(fin * point); 
 		} 
    	
-	bool first = 1;
 	for (Object& object : objects) {
-        for (auto edge : object.Edges) {
-            auto p1 = pnts[edge.first], p2 = pnts[edge.second];
-			if (first) p1.print(), p2.print(), std::cout << std::endl;
-			first = 0;
-            if (std::min({p1.x, p1.y, p2.x, p2.y}) >= 0 && std::max({p1.z, p2.z}) < 1)
-                SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);
-        }
+        for (auto face : object.Faces) {
+			Sint16 n = face.size();
+			Sint16 vx[n], vy[n];
+			for (int i = 0; i < n; i++)
+				vx[i] = face[i].x,
+				vy[i] = face[i].y;
+			filledPolygonColor(renderer, &vx, &vy, n, (Uint32)0xFFFFFF);	
+		}
     }
 }
 

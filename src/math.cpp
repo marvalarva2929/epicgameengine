@@ -56,12 +56,19 @@ void Math::render(SDL_Renderer * renderer) {
 			Sint16 n = face.size();
 		 	Sint16 * vx = new Sint16[n];
 			Sint16 * vy = new Sint16[n];
-			for (int i = 0; i < n; i++)
-				vx[i] = pnts[face[i]].x,
-				vy[i] = pnts[face[i]].y;
-			Uint8 r = 255, g = 255, b = 255, a = 1;
+			bool ok = 1;	
+			for (int i = 0; i < n; i++) {
+				auto p = pnts[face[i]];
+				vx[i] = p.x;
+				vy[i] = p.y;
+				//p.print();
+				ok &= std::min(p.x, p.y) >= 0 && p.z < 1;
+			}
+			if (!ok) continue;
+
+			Uint8 r = 57, g = 255, b = 20, a = 1;
 			
-			filledPolygonRGBA(renderer, vx, vy, n, r, g, b, a);		
+			filledPolygonRGBA(renderer, vx, vy, n, r, g, b, 150);		
 		}
     }
 }

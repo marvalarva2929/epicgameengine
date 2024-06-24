@@ -6,7 +6,7 @@
 Object::Object(std::string filename) {
     std::ifstream file; 
     file.open(filename);
-	float scale = 2.0f;
+	float scale = 0.02f;
     //std::cout << file.fail() << " " << filename << std::endl; 
     while (!file.eof()) {
         std::string c;
@@ -26,7 +26,7 @@ Object::Object(std::string filename) {
 				std::string womp;
 				std::stringstream ind; ss >> womp; ind << womp;
                	int id; ind >> id;
-				shape.push_back(id);	
+				shape.push_back(--id);	
 			}
        		Faces.push_back(shape);	 
 		}

@@ -32,7 +32,7 @@ int main(int argc, char* args[]) {
     
     float lastRenderTime = SDL_GetTicks();
     
-    Object test("vase.obj");
+    Object test("trumpet.obj");
     inject.addObject(test);
     
     while (isRunning) {

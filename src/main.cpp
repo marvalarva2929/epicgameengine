@@ -33,7 +33,7 @@ int main(int argc, char* args[]) {
     float lastRenderTime = SDL_GetTicks();
     
     Object test("trumpet.obj");
-	test.normalize(50);
+	test.normalize(20);
     inject.addObject(test);
     
     while (isRunning) {

@@ -14,7 +14,7 @@ class Object {
         std::vector<std::vector<int>> Faces;
 		Vector3 avg;
 
-		void normalize(int dist);
+		void normalize(float dist);
         int getX();
         int getY();
         void addX(int toAdd);

@@ -4,6 +4,7 @@
 #include <sstream>
 #include <algorithm>
 #include <math.h>
+#include <limits.h>
 
 Object::Object(std::string filename) {
     std::ifstream file; 
@@ -40,15 +41,23 @@ Object::Object(std::string filename) {
 	avg.z /= Points.size();
 }
 
-void Object::normalize(int dist) {
-	for (auto & point : Points)
+// min and max x and y for dist of 20
+//
+// minx = -9 
+// miny = -7
+//
+// maxx = 9 
+// maxy = 7 
+
+void Object::normalize(float dist) {
+	float m = INT_MAX;
+	for (auto & point : Points) {
 		point = point - avg;
-
-	float x = 0, y = 0, z = 0;
-	for (auto point : Points)
-		x = std::max(x, point.x),
-		y = std::max(y, point.y),
-		z = std::max(z, point.z);
-
-	std::cout << x << ", " << y << " , " << z << std::endl;
+		m = std::min({m, (float)abs(9.0 / point.x), (float)abs(7.0 / point.y)});	
+	}	
+	
+	for (auto & point : Points) {
+		point = point * m;
+		point.z -= dist;	
+	}
 }

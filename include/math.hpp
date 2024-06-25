@@ -19,6 +19,7 @@ class Math {
     Math(int p_v, int p_h);
     int WINDOW_WIDTH, WINDOW_HEIGHT;        
     void render(SDL_Renderer * renderer);
+	Vector3 calcPoint(Vector3 point);
     void moveCamera(Vector3 dl);
     void rotCamera(float thetaX, float thetaY, float thetaZ);
     void addObject(Object& object);

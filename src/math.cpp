@@ -16,7 +16,9 @@ Math::Math(int p_w, int p_h) :WINDOW_WIDTH(p_w), WINDOW_HEIGHT(p_h) {
         right = top * aspect,
         bottom = -top,
         left = -right;
-    
+   	
+	std::cout << top << " , " << bottom << std::endl;
+
     projection_matrix = Matrix(std::vector<std::vector<float>>{
         {2*near/(right-left), 0,                   0,                       -near*(right+left)/(right-left)},
         {0,                   2*near/(top-bottom), 0,                       -near*(top+bottom)/(top-bottom)},
@@ -38,6 +40,10 @@ Math::Math(int p_w, int p_h) :WINDOW_WIDTH(p_w), WINDOW_HEIGHT(p_h) {
                 {0, 0, 0, 1}
             });
 
+}
+
+Vector3 Math::calcPoint(Vector3 point) {
+	return (viewport * projection_matrix) * (rotate * (point + camera));
 }
 
 void Math::render(SDL_Renderer * renderer) {

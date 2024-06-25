@@ -12,6 +12,9 @@ class Object {
         
         std::vector<Vector3> Points;
         std::vector<std::vector<int>> Faces;
+		Vector3 avg;
+
+		void normalize(int dist);
         int getX();
         int getY();
         void addX(int toAdd);

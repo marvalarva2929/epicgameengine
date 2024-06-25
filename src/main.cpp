@@ -72,8 +72,9 @@ int main(int argc, char* args[]) {
                       isRunning = false;
                       break;
             }
-        
-        inject.render(renderer);
+       	
+		bool ok = (dl.x != 0 || dl.y != 0 || dl.z != 0 || tx != 0 || ty != 0 || tz != 0); 
+
 
         float curTime = SDL_GetTicks();
         float delayTime = std::max((float)0.0f, (float((1000.0f*(1.0f/60.0)) - (curTime - lastRenderTime)))); 
@@ -81,9 +82,11 @@ int main(int argc, char* args[]) {
             SDL_Delay(delayTime);
 
         lastRenderTime = curTime; 
-        
-        canvas.display(); 
-        canvas.clear();
-    }
+       	
+		if (ok)
+        	canvas.display(), 
+        	canvas.clear(),
+   			inject.render(renderer); 
+	}
 }
 
